@@ -1,0 +1,58 @@
+.stops-title {
+  padding: 0 15px;
+}
+
+.stops-item {
+  position: relative;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 15px;
+}
+
+.stops-item:hover {
+  background-color: #f1fcff;
+}
+
+.stops-item input {
+  position: absolute;
+  left: -20px;
+  display: none;
+}
+
+.stops-label {
+  display: block;
+  padding-left: 30px;
+  transition: all .3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.stops-label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 19px;
+  height: 19px;
+  border-radius: 3px;
+  border: 1px solid #d2d5d6;
+}
+
+.stops-item input:checked + .stops-label:before {
+  border: 1px solid #2196f3;
+}
+
+.stops-item input:checked + .stops-label:after {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 7px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent #3e9ce8 #3e9ce8 transparent;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 7px;
+  top: 11px;
+}

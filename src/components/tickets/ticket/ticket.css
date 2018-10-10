@@ -1,0 +1,109 @@
+.ticket {
+  height: 161px;
+  display: flex;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(91, 137, 164, 0.25);
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.ticket-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  width: 200px;
+  border-right: 1px solid #ECEFF1;
+}
+
+.ticket-main img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.ticket-main a {
+  transition: all .3s;
+  text-align: center;
+  width: calc(100% - 40px);
+  background-color: #ff6d00;
+  border-radius: 5px;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1), 0 1px 0 #d64d08;
+  color: #fff;
+  text-decoration: none;
+  padding: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ticket-main a:hover {
+  background-color: #FF8124;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25), 0 1px 0 #f7661d;
+}
+
+.ticket-main a span {
+  display: block;
+}
+
+.ticket-details {
+  padding: 26px;
+  width: 100%;
+}
+
+.ticket-time {
+  font-size: 32px;
+  color: #4a4a4a;
+  align-items: flex-start;
+}
+
+.ticket-city,
+.ticket-date {
+  font-size: 12px;
+}
+
+.ticket-city {
+  color: #4a4a4a;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.ticket-date {
+  color: #8b9497;
+}
+
+.ticket-stops {
+  color: #8b9497;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 600;
+  width: 96px;
+  position: relative;
+  text-align: center;
+}
+
+.ticket-stops:before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background-color: #d2d5d6;
+  animation-duration: 1s;
+  animation-name: fill;
+  animation-fill-mode: forwards;
+}
+
+.ticket-stops:after {
+  content: '';
+  position: absolute;
+  right: 100%;
+  bottom: -9px;
+  width: 13px;
+  height: 13px;
+  transform: rotate(90deg);
+  background-image: url(/plane.svg);
+  animation-duration: 1s;
+  animation-name: fly;
+  animation-fill-mode: forwards;
+}

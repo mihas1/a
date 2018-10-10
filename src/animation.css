@@ -1,0 +1,19 @@
+@keyframes fill {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes fly {
+  from {
+    right: 100%;
+  }
+
+  to {
+    right: -8px;
+  }
+}

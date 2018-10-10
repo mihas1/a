@@ -1,0 +1,24 @@
+.sidebar {
+  box-shadow: 0 1px 4px rgba(91, 137, 164, 0.25);
+  border-radius: 5px;
+  width: 232px;
+  padding: 15px 0;
+  background-color: #fff;
+}
+
+.sidebar > * {
+  margin-bottom: 30px;
+}
+
+.sidebar > *:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-title {
+  color: #4a4a4a;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 19px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}

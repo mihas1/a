@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import 'object-assign-polyfill';
 import './animation.css';
 import './App.css';
 import Sidebar from './components/sidebar/sidebar';

@@ -46,7 +46,7 @@ class Ticket extends Component {
                 return stops + ' ' + text;
             },
             formatDate(date, type) {
-                let _date = new Date(date.replace(/\./g, '-')),
+                let _date = new Date(date.replace(/\./g, '/')),
                     _day = _date.getDay(),
                     _d = _date.getDate(),
                     _m = _date.getMonth(),

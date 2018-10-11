@@ -14,4 +14,12 @@
     display: flex;
     flex-wrap: wrap;
   }
+
+  .stops-item {
+    padding-right: 65px;
+  }
+
+  .stops-only {
+    right: 8px;
+  }
 }

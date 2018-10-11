@@ -39,6 +39,10 @@ class Tickets extends Component {
             });
         }
 
+        prep = prep.sort((a,b) => {
+            return a.price - b.price;
+        });
+
         const tickets = prep.map((item) => {
             return <Ticket data={item} currSymb={this.props.currSymb} currRate={this.props.currRate} key={item.arrival_date + '_' + item.arrival_time}/>
         });

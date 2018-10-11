@@ -9,13 +9,55 @@ class Currency extends Component {
             currencies: ['RUB', 'USD', 'EUR'],
             active: 'RUB'
         };
+
+        this.getCurrSymbol = this.getCurrSymbol.bind(this);
+        this.getCurrRate = this.getCurrRate.bind(this);
+        this.changeCurrency = this.changeCurrency.bind(this);
+    }
+
+    componentDidMount() {
+        this.getCurrSymbol();
+    }
+
+    getCurrSymbol() {
+        return fetch('https://restcountries.eu/rest/v2/currency/' + this.state.active)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.props.setCurrSymb(responseJson[0]['currencies'][0]['symbol']);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    getCurrRate() {
+        if (this.state.active === 'RUB') {
+            this.props.setCurrRate(1);
+            return false;
+        } else {
+            return fetch('http://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.props.setCurrRate(responseJson['RUB_' + this.state.active]['val']);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }
+
+    changeCurrency(currency) {
+        this.setState({active: currency}, () => {
+            this.getCurrSymbol();
+            this.getCurrRate();
+        });
     }
 
     render() {
         const currencies = this.state.currencies.map((item, i) => {
             return (
                 <div className={'currency-btn ' + (this.state.active === item ? 'active' : '')}
-                    onClick={() => this.setState({active: item})}
+                    onClick={() => this.changeCurrency(item)}
                     key={i + '_' + item}>
                     {item}
                 </div>

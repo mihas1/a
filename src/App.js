@@ -9,39 +9,34 @@ class App extends Component {
         super(props);
 
         this.state = {
-            isLoading: false,
-            filters: [],
-            tickets: []
+            filters: {},
+            currencySymb: '',
+            currencyRate: 1
         };
+
+        this.setCurrencySymb = this.setCurrencySymb.bind(this);
+        this.setCurrencyRate = this.setCurrencyRate.bind(this);
+        this.setFilters = this.setFilters.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({isLoading: true});
+    setCurrencySymb(symb) {
+        this.setState({currencySymb: symb});
+    }
 
-        return fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                let state = Object.assign({}, this.state);
-                state.isLoading = false;
-                state.tickets = responseJson.tickets;
+    setCurrencyRate(rate) {
+        this.setState({currencyRate: rate});
+    }
 
-                this.setState(state, () => {
-                    console.log(this.state.tickets)
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    setFilters(filters) {
+        this.setState({filters: filters});
     }
 
     render() {
-
-
         return (
             <div className='main'>
                 <img className='logo' src='/logo.svg' alt='logo' width={60}/>
-                <Sidebar />
-                <Tickets tickets={this.state.tickets} />
+                <Sidebar setCurrSymb={this.setCurrencySymb} setCurrRate={this.setCurrencyRate} setFilters={this.setFilters}/>
+                <Tickets currSymb={this.state.currencySymb} currRate={this.state.currencyRate} filters={this.state.filters}/>
             </div>
         );
     }

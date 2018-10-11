@@ -14,8 +14,8 @@ class Sidebar extends Component {
 
         return (
             <div className='sidebar'>
-                <Currency />
-                <Stops />
+                <Currency setCurrSymb={this.props.setCurrSymb} setCurrRate={this.props.setCurrRate}/>
+                <Stops setFilters={this.props.setFilters}/>
             </div>
         );
     }

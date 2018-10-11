@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import 'whatwg-fetch';
 import './currency.css';
 
 class Currency extends Component {
@@ -20,7 +21,7 @@ class Currency extends Component {
     }
 
     getCurrSymbol() {
-        return fetch('https://restcountries.eu/rest/v2/currency/' + this.state.active)
+        window.fetch('https://restcountries.eu/rest/v2/currency/' + this.state.active)
             .then((response) => response.json())
             .then((responseJson) => {
                 this.props.set('currencySymb', responseJson[0]['currencies'][0]['symbol']);
@@ -35,7 +36,7 @@ class Currency extends Component {
             this.props.set('currencyRate', 1);
             return false;
         } else {
-            return fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
+            window.fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.props.set('currencyRate', responseJson['RUB_' + this.state.active]['val']);

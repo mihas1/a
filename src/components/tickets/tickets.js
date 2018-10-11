@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './tickets.css';
 import Ticket from './ticket/ticket';
+import 'whatwg-fetch';
 
 class Tickets extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class Tickets extends Component {
     componentDidMount() {
         this.setState({isLoading: true});
 
-        return fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
+        window.fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
             .then((response) => response.json())
             .then((responseJson) => {
                 let state = Object.assign({}, this.state);

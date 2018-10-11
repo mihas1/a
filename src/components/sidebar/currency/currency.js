@@ -35,7 +35,7 @@ class Currency extends Component {
             this.props.set('currencyRate', 1);
             return false;
         } else {
-            return fetch('http://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
+            return fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.props.set('currencyRate', responseJson['RUB_' + this.state.active]['val']);

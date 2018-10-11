@@ -3,6 +3,7 @@ import './animation.css';
 import './App.css';
 import Sidebar from './components/sidebar/sidebar';
 import Tickets from './components/tickets/tickets';
+import './media.css';
 
 class App extends Component {
     constructor(props) {
@@ -14,28 +15,18 @@ class App extends Component {
             currencyRate: 1
         };
 
-        this.setCurrencySymb = this.setCurrencySymb.bind(this);
-        this.setCurrencyRate = this.setCurrencyRate.bind(this);
-        this.setFilters = this.setFilters.bind(this);
+        this.set = this.set.bind(this);
     }
 
-    setCurrencySymb(symb) {
-        this.setState({currencySymb: symb});
-    }
-
-    setCurrencyRate(rate) {
-        this.setState({currencyRate: rate});
-    }
-
-    setFilters(filters) {
-        this.setState({filters: filters});
+    set(name, val) {
+        this.setState({[name]: val});
     }
 
     render() {
         return (
             <div className='main'>
                 <img className='logo' src='/logo.svg' alt='logo' width={60}/>
-                <Sidebar setCurrSymb={this.setCurrencySymb} setCurrRate={this.setCurrencyRate} setFilters={this.setFilters}/>
+                <Sidebar set={this.set}/>
                 <Tickets currSymb={this.state.currencySymb} currRate={this.state.currencyRate} filters={this.state.filters}/>
             </div>
         );

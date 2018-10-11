@@ -52,23 +52,36 @@ class Stops extends Component {
         }
 
         this.setState(state, () => {
-            this.props.setFilters(this.state.checked);
+            this.props.set('filters', this.state.checked);
         });
     }
 
+    only(filter) {
+        let state = Object.assign({}, this.state);
+        for (let i in state.checked) {
+            state.checked[i] = false;
+        }
+        state.checked[filter] = true;
+
+        this.setState(state, () => {
+            this.props.set('filters', this.state.checked);
+        });
+    }
 
     render() {
         const stops = this.state.stops.map((item, i) => {
             return (
                 <div className='stops-item' key={i + '_' + item.filter}>
-                    <input
-                        id={item.filter}
+                    <input id={item.filter}
                         type='checkbox'
-                        defaultChecked={this.state.checked[item.filter]}
+                        checked={!!this.state.checked[item.filter]}
                         onChange={() => this.onChange(item.filter)}/>
                     <label className='stops-label' htmlFor={item.filter}>
                         {item.text}
                     </label>
+                    <span className='stops-only' onClick={() => this.only(item.filter)}>
+                        Только
+                    </span>
                 </div>
             )
         });

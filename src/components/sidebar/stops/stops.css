@@ -13,6 +13,10 @@
   background-color: #f1fcff;
 }
 
+.stops-item:hover .stops-only {
+  display: block;
+}
+
 .stops-item input {
   position: absolute;
   left: -20px;
@@ -55,4 +59,17 @@
   position: absolute;
   left: 7px;
   top: 11px;
+}
+
+.stops-only {
+  display: none;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2196f3;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
 }

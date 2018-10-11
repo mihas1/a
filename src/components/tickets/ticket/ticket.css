@@ -2,9 +2,14 @@
   height: 161px;
   display: flex;
   margin-bottom: 20px;
+  transition: box-shadow .3s;
   box-shadow: 0 1px 4px rgba(91, 137, 164, 0.25);
   border-radius: 5px;
   background-color: #fff;
+}
+
+.ticket:hover {
+  box-shadow: 0 10px 50px rgba(91, 137, 164, 0.25);
 }
 
 .ticket-main {
@@ -79,6 +84,7 @@
   width: 96px;
   position: relative;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .ticket-stops:before {

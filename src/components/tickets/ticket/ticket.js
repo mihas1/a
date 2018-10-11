@@ -2,63 +2,68 @@ import React, {Component} from 'react';
 import './ticket.css';
 
 class Ticket extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
     render() {
-        const logo = (carrier) => {
-            // pick a logo by carrier, could switch to api
-            const helper = {
-                'TK': '/tk.png',
-                'S7': '/s7.png',
-                'BA': '/ba.png',
-                'SU': '/su.png'
-            };
+        const helper = {
+            img(carrier, type) {
+                const db = {
+                    'TK': {
+                        img: '/tk.png',
+                        alt: 'turkish airlines'
+                    },
+                    'S7': {
+                        img: '/s7.png',
+                        alt: 's7'
+                    },
+                    'BA': {
+                        img: '/ba.png',
+                        alt: 'british airways'
+                    },
+                    'SU': {
+                        img: '/su.png',
+                        alt: 'aeroflot'
+                    }
+                };
 
-            if (carrier in helper) {
-                return helper[carrier];
-            }
+                if (carrier in db) {
+                    if (type in db[carrier]) {
+                        return db[carrier][type];
+                    }
+                }
 
-            return '';
-        };
+                return '';
+            },
+            formatStops(stops) {
+                let text = '';
 
-        const alt = (carrier) => {
-            // pick a alt by carrier, could switch to api
-            const helper = {
-                'TK': 'turkish airlines',
-                'S7': 's7',
-                'BA': 'british airways',
-                'SU': 'aeroflot'
-            };
+                if (stops === 1) {
+                    text = 'пересадка';
+                } else if (stops > 1 && stops < 5) {
+                    text = 'пересадки';
+                } else if (stops >= 5) {
+                    text = 'пересадок';
+                }
 
-            if (carrier in helper) {
-                return helper[carrier];
-            }
+                return stops + ' ' + text;
+            },
+            formatDate(date, type) {
+                let _date = new Date(date),
+                    _day = _date.getDay(),
+                    _d = _date.getDate(),
+                    _m = _date.getMonth(),
+                    _y = _date.getFullYear();
 
-            return '';
-        };
+                const month = value => ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][value];
+                const day = value => ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][value];
 
-        const formatStops = (stops) => {
-            let text = '';
+                if (type === 'month') {
+                    return _d + ' ' + month(_m) + ' ' + _y;
+                } else if (type === 'day') {
+                    return day(_day);
+                }
 
-            if (stops === 1) {
-                text = 'пересадка';
-            } else if (stops > 1 && stops < 5) {
-                text = 'пересадки';
-            } else if (stops >= 5) {
-                text = 'пересадок';
-            }
-
-            return stops + ' ' + text;
-        };
-
-        const formatPrice = (price) => {
-            return prepNum((price * this.props.currRate).toFixed());
-
-            function prepNum(num) {
+                return date;
+            },
+            formatPrice(num) {
                 // kolhoz
                 let _p = num,
                     _t = 3,
@@ -74,11 +79,10 @@ class Ticket extends Component {
                             _t--;
                         }
                     }
-                } else {
-                    return num;
+                    return _r;
                 }
 
-                return _r;
+                return num;
             }
         };
 
@@ -99,13 +103,13 @@ class Ticket extends Component {
         return (
             <div className='ticket'>
                 <div className='ticket-main'>
-                    <img src={logo(carrier)} alt={alt(carrier)} width={120} height={35}/>
-                    <a href={'/'}><span>Купить за</span> {formatPrice(price)}{this.props.currSymb}</a>
+                    <img src={helper.img(carrier, 'img')} alt={helper.img(carrier, 'alt')} width={120} height={35}/>
+                    <a href={'/'}><span>Купить</span>за {helper.formatPrice((price * this.props.currRate).toFixed())}{this.props.currSymb}</a>
                 </div>
                 <div className='ticket-details'>
                     <div className='ticket-time df jcsb'>
                         <div className='tal'>{departure_time}</div>
-                        {stops >= 1 && <div className='ticket-stops'>{formatStops(stops)}</div>}
+                        {stops >= 1 && <div className='ticket-stops'>{helper.formatStops(stops)}</div>}
                         <div className='tar'>{arrival_time}</div>
                     </div>
                     <div className='ticket-city df jcsb'>
@@ -113,8 +117,8 @@ class Ticket extends Component {
                         <div className='tar'>{destination}, {destination_name}</div>
                     </div>
                     <div className='ticket-date df jcsb'>
-                        <div className='tal'>{departure_date}</div>
-                        <div className='tar'>{arrival_date}</div>
+                        <div className='tal'>{helper.formatDate(departure_date, 'month')}, {helper.formatDate(departure_date, 'day')}</div>
+                        <div className='tar'>{helper.formatDate(arrival_date, 'month')}, {helper.formatDate(arrival_date, 'day')}</div>
                     </div>
                 </div>
             </div>

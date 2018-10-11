@@ -4,18 +4,11 @@ import Currency from './currency/currency';
 import Stops from './stops/stops';
 
 class Sidebar extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
     render() {
-
         return (
             <div className='sidebar'>
-                <Currency setCurrSymb={this.props.setCurrSymb} setCurrRate={this.props.setCurrRate}/>
-                <Stops setFilters={this.props.setFilters}/>
+                <Currency set={this.props.set}/>
+                <Stops set={this.props.set}/>
             </div>
         );
     }

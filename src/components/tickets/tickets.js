@@ -20,9 +20,7 @@ class Tickets extends Component {
                 let state = Object.assign({}, this.state);
                 state.tickets = responseJson.tickets;
 
-                this.setState(state, () => {
-                    console.log(this.state.tickets)
-                });
+                this.setState(state);
             })
             .catch((error) => {
                 console.error(error);

@@ -1,0 +1,17 @@
+@media (max-width: 767.98px) {
+  .main {
+    width: calc(566px + 40px);
+    padding: 160px 20px 40px;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .stops-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

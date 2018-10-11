@@ -4,6 +4,7 @@ import './App.css';
 import Sidebar from './components/sidebar/sidebar';
 import Tickets from './components/tickets/tickets';
 import './media.css';
+import { polyfill } from 'es6-promise'; polyfill(); //ie11 fix
 
 class App extends Component {
     constructor(props) {

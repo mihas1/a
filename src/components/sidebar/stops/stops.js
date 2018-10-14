@@ -28,9 +28,7 @@ class Stops extends Component {
                     text: '3 пересадки'
                 },
             ],
-            checked: {
-                'all': true
-            }
+            checked: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -43,11 +41,25 @@ class Stops extends Component {
     onChange(filter) {
         let state = Object.assign({}, this.state);
 
-        if (filter !== 'undefined') {
-            if (filter in state.checked) {
-                state.checked[filter] = !state.checked[filter];
+        if (filter !== undefined) {
+            if (filter === 'all') {
+                let all = state.checked.all;
+
+                for (let i = 0; i < state.stops.length; i++) {
+                    state.checked[state.stops[i].filter] = !all;
+                }
             } else {
-                state.checked[filter] = true;
+                state.checked['all'] = false;
+
+                if (filter in state.checked) {
+                    state.checked[filter] = !state.checked[filter];
+                } else {
+                    state.checked[filter] = true;
+                }
+            }
+        } else {
+            for (let i = 0; i < state.stops.length; i++) {
+                state.checked[state.stops[i].filter] = true;
             }
         }
 
@@ -58,10 +70,16 @@ class Stops extends Component {
 
     only(filter) {
         let state = Object.assign({}, this.state);
-        for (let i in state.checked) {
-            state.checked[i] = false;
+        if (filter === 'all') {
+            for (let i = 0; i < state.stops.length; i++) {
+                state.checked[state.stops[i].filter] = true;
+            }
+        } else {
+            for (let i in state.checked) {
+                state.checked[i] = false;
+            }
+            state.checked[filter] = true;
         }
-        state.checked[filter] = true;
 
         this.setState(state, () => {
             this.props.set('filters', this.state.checked);
@@ -69,6 +87,12 @@ class Stops extends Component {
     }
 
     render() {
+        const onlyHtml = (filter) => (
+            <span className='stops-only' onClick={() => this.only(filter)}>
+                Только
+            </span>
+        );
+
         const stops = this.state.stops.map((item, i) => {
             return (
                 <div className='stops-item' key={i + '_' + item.filter}>
@@ -79,9 +103,7 @@ class Stops extends Component {
                     <label className='stops-label' htmlFor={item.filter}>
                         {item.text}
                     </label>
-                    <span className='stops-only' onClick={() => this.only(item.filter)}>
-                        Только
-                    </span>
+                    {item.filter !== 'all' && onlyHtml(item.filter)}
                 </div>
             )
         });

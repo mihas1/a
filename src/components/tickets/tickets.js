@@ -33,11 +33,9 @@ class Tickets extends Component {
             prep = this.state.tickets.slice();
 
         // filter
-        if (filters['all'] === false) {
-            prep = prep.filter((item) => {
-                return filters[item.stops] === true
-            });
-        }
+        prep = prep.filter((item) => {
+            return filters[item.stops] === true
+        });
 
         prep = prep.sort((a,b) => {
             return a.price - b.price;

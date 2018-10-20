@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import './tickets.css';
-import Ticket from './ticket/ticket';
+import Ticket from './ticket/Ticket';
 import 'whatwg-fetch';
 
 class Tickets extends Component {
@@ -13,13 +14,16 @@ class Tickets extends Component {
     }
 
     componentDidMount() {
-        this.setState({isLoading: true});
-
         window.fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
             .then((response) => response.json())
             .then((responseJson) => {
                 let state = Object.assign({}, this.state);
                 state.tickets = responseJson.tickets;
+
+                // todo добавить поиск минимальных цен
+                state.tickets = state.tickets.sort((a,b) => {
+                    return a.price - b.price;
+                });
 
                 this.setState(state);
             })
@@ -29,20 +33,21 @@ class Tickets extends Component {
     }
 
     render() {
-        let filters = this.props.filters,
-            prep = this.state.tickets.slice();
+        const { filters, currRate, currSymb } = this.props;
+        let prep = this.state.tickets.slice();
 
         // filter
         prep = prep.filter((item) => {
-            return filters[item.stops] === true
-        });
-
-        prep = prep.sort((a,b) => {
-            return a.price - b.price;
+            return filters[item.stops]
         });
 
         const tickets = prep.map((item) => {
-            return <Ticket data={item} currSymb={this.props.currSymb} currRate={this.props.currRate} key={item.arrival_date + '_' + item.arrival_time}/>
+            return <Ticket
+                data={item}
+                currSymb={currSymb}
+                currRate={currRate}
+                key={item.arrival_date + '_' + item.arrival_time}
+            />
         });
 
         return (
@@ -52,5 +57,11 @@ class Tickets extends Component {
         );
     }
 }
+
+Tickets.propTypes = {
+    filters: PropTypes.object.isRequired,
+    currSymb: PropTypes.string.isRequired,
+    currRate: PropTypes.number.isRequired,
+};
 
 export default Tickets;

@@ -24,7 +24,7 @@ class Currency extends Component {
         window.fetch('https://restcountries.eu/rest/v2/currency/' + this.state.active)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.props.set('currencySymb', responseJson[0]['currencies'][0]['symbol']);
+                this.props.set('currSymb', responseJson[0]['currencies'][0]['symbol']);
             })
             .catch((error) => {
                 console.error(error);
@@ -33,13 +33,12 @@ class Currency extends Component {
 
     getCurrRate() {
         if (this.state.active === 'RUB') {
-            this.props.set('currencyRate', 1);
-            return false;
+            this.props.set('currRate', 1);
         } else {
             window.fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.set('currencyRate', responseJson['RUB_' + this.state.active]['val']);
+                    this.props.set('currRate', responseJson['RUB_' + this.state.active]['val']);
                 })
                 .catch((error) => {
                     console.error(error);

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import './sidebar.css';
-import Currency from './currency/currency';
-import Stops from './stops/stops';
+import Currency from './currency/Currency';
+import Stops from './stops/Stops';
 
 class Sidebar extends Component {
     render() {
@@ -13,5 +14,9 @@ class Sidebar extends Component {
         );
     }
 }
+
+Sidebar.propTypes = {
+    set: PropTypes.func.isRequired,
+};
 
 export default Sidebar;

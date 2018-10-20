@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'
 import 'object-assign-polyfill';
 import './animation.css';
 import './App.css';
-import Sidebar from './components/sidebar/sidebar';
-import Tickets from './components/tickets/tickets';
+import Sidebar from './components/sidebar/Sidebar';
+import Tickets from './components/tickets/Tickets';
 import './media.css';
 import { polyfill } from 'es6-promise'; polyfill(); //ie11 fix
 
@@ -13,8 +14,8 @@ class App extends Component {
 
         this.state = {
             filters: {},
-            currencySymb: '',
-            currencyRate: 1
+            currSymb: '',
+            currRate: 1
         };
 
         this.set = this.set.bind(this);
@@ -25,14 +26,25 @@ class App extends Component {
     }
 
     render() {
+        const {filters, currRate, currSymb} = this.state;
+
         return (
             <div className='main'>
                 <img className='logo' src='/logo.svg' alt='logo' width={60}/>
                 <Sidebar set={this.set}/>
-                <Tickets currSymb={this.state.currencySymb} currRate={this.state.currencyRate} filters={this.state.filters}/>
+                <Tickets currSymb={currSymb} currRate={currRate} filters={filters}/>
             </div>
         );
     }
 }
 
-export default App;
+const mapStateToProps = store => {
+    console.log(store);
+    return {
+        currency: store.currency,
+        filters: store.filters,
+        page: store.page,
+    }
+};
+
+export default connect(mapStateToProps)(App)

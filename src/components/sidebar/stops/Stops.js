@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import OnlyHtml from './OnlyHtml';
+import { helper } from '../../../helper';
 import './stops.css';
 
 class Stops extends Component {
@@ -6,32 +8,12 @@ class Stops extends Component {
         super(props);
 
         this.state = {
-            stops: [
-                {
-                    filter: 'all',
-                    text: 'Все'
-                },
-                {
-                    filter: 0,
-                    text: 'Без пересадок'
-                },
-                {
-                    filter: 1,
-                    text: '1 пересадка'
-                },
-                {
-                    filter: 2,
-                    text: '2 пересадки'
-                },
-                {
-                    filter: 3,
-                    text: '3 пересадки'
-                },
-            ],
-            checked: {}
+            checked: {},
+            stops: ['all', 0, 1, 2, 3]
         };
 
         this.onChange = this.onChange.bind(this);
+        this.only = this.only.bind(this);
     }
 
     componentDidMount() {
@@ -46,7 +28,7 @@ class Stops extends Component {
                 let all = state.checked.all;
 
                 for (let i = 0; i < state.stops.length; i++) {
-                    state.checked[state.stops[i].filter] = !all;
+                    state.checked[state.stops[i]] = !all;
                 }
             } else {
                 state.checked['all'] = false;
@@ -59,7 +41,7 @@ class Stops extends Component {
             }
         } else {
             for (let i = 0; i < state.stops.length; i++) {
-                state.checked[state.stops[i].filter] = true;
+                state.checked[state.stops[i]] = true;
             }
         }
 
@@ -72,7 +54,7 @@ class Stops extends Component {
         let state = Object.assign({}, this.state);
         if (filter === 'all') {
             for (let i = 0; i < state.stops.length; i++) {
-                state.checked[state.stops[i].filter] = true;
+                state.checked[state.stops[i]] = true;
             }
         } else {
             for (let i in state.checked) {
@@ -87,23 +69,19 @@ class Stops extends Component {
     }
 
     render() {
-        const onlyHtml = (filter) => (
-            <span className='stops-only' onClick={() => this.only(filter)}>
-                Только
-            </span>
-        );
-
-        const stops = this.state.stops.map((item, i) => {
+        const stops = this.state.stops.map((filter, i) => {
             return (
-                <div className='stops-item' key={i + '_' + item.filter}>
-                    <input id={item.filter}
+                <div className='stops-item' key={i + '_' + filter}>
+                    <input
+                        id={filter}
                         type='checkbox'
-                        checked={!!this.state.checked[item.filter]}
-                        onChange={() => this.onChange(item.filter)}/>
-                    <label className='stops-label' htmlFor={item.filter}>
-                        {item.text}
+                        checked={!!this.state.checked[filter]}
+                        onChange={() => this.onChange(filter)}
+                    />
+                    <label className='stops-label' htmlFor={filter}>
+                        {helper.formatStops(filter)}
                     </label>
-                    {item.filter !== 'all' && onlyHtml(item.filter)}
+                    {filter !== 'all' && <OnlyHtml only={this.only} filter={filter}/>}
                 </div>
             )
         });

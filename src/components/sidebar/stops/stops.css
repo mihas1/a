@@ -24,7 +24,9 @@
 }
 
 .stops-label {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding-left: 30px;
   transition: all .3s;
   cursor: pointer;
@@ -33,7 +35,7 @@
 
 .stops-label:not([for='all']) {
   height: 100%;
-  line-height: 23px;
+  line-height: 18px;
 }
 
 .stops-label:before {
@@ -81,8 +83,6 @@
 
 .stops-from {
   font-size: 12px;
-  position: absolute;
-  left: 45px;
-  top: 9px;
+  line-height: 1;
   color: #8b9497;
 }

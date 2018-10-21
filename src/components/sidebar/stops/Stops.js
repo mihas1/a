@@ -62,11 +62,11 @@ class Stops extends Component {
                     />
                     <label className='stops-label' htmlFor={filter}>
                         {helper.formatStops(filter)}
+                        <span className='stops-from'>
+                            от {helper.formatPrice((available[filter] * rate).toFixed())}{symbol}
+                        </span>
                     </label>
                     {filter !== 'all' && <OnlyHtml only={this.only} filter={filter}/>}
-                    <div className='stops-from'>
-                        от {helper.formatPrice((available[filter] * rate).toFixed())}{symbol}
-                    </div>
                 </div>
             )
         });

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import OnlyHtml from './OnlyHtml';
 import { helper } from '../../../helper';
 import './stops.css';
@@ -6,11 +7,6 @@ import './stops.css';
 class Stops extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            checked: {},
-            stops: ['all', 0, 1, 2, 3]
-        };
 
         this.onChange = this.onChange.bind(this);
         this.only = this.only.bind(this);
@@ -21,61 +17,67 @@ class Stops extends Component {
     }
 
     onChange(filter) {
-        let state = Object.assign({}, this.state);
+        const {filters,setFilterActive} = this.props;
+        const {available,active} = filters;
+
+        let _active = Object.assign({}, active);
 
         if (filter !== undefined) {
             if (filter === 'all') {
-                let all = state.checked.all;
+                let all = _active.all;
 
-                for (let i = 0; i < state.stops.length; i++) {
-                    state.checked[state.stops[i]] = !all;
+                for (let i = 0; i < available.length; i++) {
+                    _active[available[i]] = !all;
                 }
             } else {
-                state.checked['all'] = false;
+                _active['all'] = false;
 
-                if (filter in state.checked) {
-                    state.checked[filter] = !state.checked[filter];
+                if (filter in _active) {
+                    _active[filter] = !_active[filter];
                 } else {
-                    state.checked[filter] = true;
+                    _active[filter] = true;
                 }
             }
         } else {
-            for (let i = 0; i < state.stops.length; i++) {
-                state.checked[state.stops[i]] = true;
+            for (let i = 0; i < available.length; i++) {
+                _active[available[i]] = true;
             }
         }
 
-        this.setState(state, () => {
-            this.props.set('filters', this.state.checked);
-        });
+        setFilterActive(_active);
     }
 
     only(filter) {
-        let state = Object.assign({}, this.state);
+        const {filters,setFilterActive} = this.props;
+        const {available,active} = filters;
+
+        let _active = Object.assign({}, active);
+
         if (filter === 'all') {
-            for (let i = 0; i < state.stops.length; i++) {
-                state.checked[state.stops[i]] = true;
+            for (let i = 0; i < available.length; i++) {
+                _active[available[i]] = true;
             }
         } else {
-            for (let i in state.checked) {
-                state.checked[i] = false;
+            for (let i in _active) {
+                _active[i] = false;
             }
-            state.checked[filter] = true;
+            _active[filter] = true;
         }
 
-        this.setState(state, () => {
-            this.props.set('filters', this.state.checked);
-        });
+        setFilterActive(_active);
     }
 
     render() {
-        const stops = this.state.stops.map((filter, i) => {
+        const {filters} = this.props;
+        const {available,active} = filters;
+
+        const stops = available.map((filter, i) => {
             return (
                 <div className='stops-item' key={i + '_' + filter}>
                     <input
                         id={filter}
                         type='checkbox'
-                        checked={!!this.state.checked[filter]}
+                        checked={!!active[filter]}
                         onChange={() => this.onChange(filter)}
                     />
                     <label className='stops-label' htmlFor={filter}>
@@ -96,5 +98,12 @@ class Stops extends Component {
         );
     }
 }
+
+
+Stops.propTypes = {
+    filters: PropTypes.object.isRequired,
+    setFilterActive: PropTypes.func.isRequired
+
+};
 
 export default Stops;

@@ -1,44 +1,32 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import 'whatwg-fetch';
 import './currency.css';
 
 class Currency extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            currencies: ['RUB', 'USD', 'EUR'],
-            active: 'RUB'
-        };
-
-        this.getCurrSymbol = this.getCurrSymbol.bind(this);
-        this.getCurrRate = this.getCurrRate.bind(this);
-        this.changeCurrency = this.changeCurrency.bind(this);
-    }
-
     componentDidMount() {
-        this.getCurrSymbol();
+        this.getCurrSymbol(this.props.currency.active);
     }
 
-    getCurrSymbol() {
-        window.fetch('https://restcountries.eu/rest/v2/currency/' + this.state.active)
+    getCurrSymbol(currency) {
+        window.fetch('https://restcountries.eu/rest/v2/currency/' + currency)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.props.set('currSymb', responseJson[0]['currencies'][0]['symbol']);
+                this.props.setCurrencySymbol(responseJson[0]['currencies'][0]['symbol']);
             })
             .catch((error) => {
                 console.error(error);
             });
     }
 
-    getCurrRate() {
-        if (this.state.active === 'RUB') {
-            this.props.set('currRate', 1);
+    getCurrRate(currency) {
+        if (currency === 'RUB') {
+            this.props.setCurrencyRate(1);
         } else {
-            window.fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + this.state.active + '&compact=y')
+            window.fetch('https://free.currencyconverterapi.com/api/v5/convert?q=RUB_' + currency + '&compact=y')
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.set('currRate', responseJson['RUB_' + this.state.active]['val']);
+                    this.props.setCurrencyRate(responseJson['RUB_' + currency]['val']);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -47,16 +35,18 @@ class Currency extends Component {
     }
 
     changeCurrency(currency) {
-        this.setState({active: currency}, () => {
-            this.getCurrSymbol();
-            this.getCurrRate();
-        });
+        this.getCurrSymbol(currency);
+        this.getCurrRate(currency);
+        this.props.setCurrency(currency);
     }
 
     render() {
-        const currencies = this.state.currencies.map((item, i) => {
+        const {currency} = this.props;
+        const {active, available} = currency;
+
+        const currenciesHtml = available.map((item, i) => {
             return (
-                <div className={'currency-btn ' + (this.state.active === item ? 'active' : '')}
+                <div className={'currency-btn ' + (active === item ? 'active' : '')}
                     onClick={() => this.changeCurrency(item)}
                     key={i + '_' + item}>
                     {item}
@@ -67,10 +57,18 @@ class Currency extends Component {
         return (
             <div className='currency'>
                 <div className='sidebar-title currency-title'>Валюта</div>
-                <div className='currency-container'>{currencies}</div>
+                <div className='currency-container'>{currenciesHtml}</div>
             </div>
         );
     }
 }
+
+Currency.propTypes = {
+    currency: PropTypes.object.isRequired,
+    setCurrency: PropTypes.func.isRequired,
+    setCurrencyRate: PropTypes.func.isRequired,
+    setCurrencySymbol: PropTypes.func.isRequired
+
+};
 
 export default Currency;

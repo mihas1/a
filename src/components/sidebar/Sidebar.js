@@ -6,17 +6,25 @@ import Stops from './stops/Stops';
 
 class Sidebar extends Component {
     render() {
+        const {currency, filters, setCurrency, setCurrencyRate, setCurrencySymbol, setFilterActive} = this.props;
+
         return (
             <div className='sidebar'>
-                <Currency set={this.props.set}/>
-                <Stops set={this.props.set}/>
+                <Currency currency={currency} setCurrency={setCurrency} setCurrencyRate={setCurrencyRate} setCurrencySymbol={setCurrencySymbol}/>
+                <Stops filters={filters} setFilterActive={setFilterActive}/>
             </div>
         );
     }
 }
 
 Sidebar.propTypes = {
-    set: PropTypes.func.isRequired,
+    currency: PropTypes.object.isRequired,
+    filters: PropTypes.object.isRequired,
+    setCurrency: PropTypes.func.isRequired,
+    setCurrencyRate: PropTypes.func.isRequired,
+    setCurrencySymbol: PropTypes.func.isRequired,
+    setFilterActive: PropTypes.func.isRequired
+
 };
 
 export default Sidebar;

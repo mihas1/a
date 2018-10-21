@@ -1,5 +1,5 @@
-import {scheme} from "../store/scheme";
-import { SET_CURRENCY, SET_CURRENCY_RATE, SET_CURRENCY_SYMBOL } from "../actions/actions";
+import {scheme} from '../store/scheme';
+import { SET_CURRENCY, SET_CURRENCY_RATE, SET_CURRENCY_SYMBOL } from '../actions/actions';
 
 export function currencyReducer(state = scheme.currency, action) {
     switch (action.type) {

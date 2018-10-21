@@ -1,38 +1,47 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 import './sidebar.css';
 import Currency from './currency/Currency';
 import Stops from './stops/Stops';
+import {setCurrency, setCurrencyRate, setCurrencySymbol, setFilterActive} from '../../actions/actions';
 
 class Sidebar extends Component {
     render() {
-        const {currency, filters, setCurrency, setCurrencyRate, setCurrencySymbol, setFilterActive} = this.props;
+        const {currency, filters, setCurrencyAction, setCurrencyRateAction, setCurrencySymbolAction, setFilterActiveAction} = this.props;
 
         return (
             <div className='sidebar'>
                 <Currency
                     currency={currency}
-                    setCurrency={setCurrency}
-                    setCurrencyRate={setCurrencyRate}
-                    setCurrencySymbol={setCurrencySymbol}
+                    setCurrency={setCurrencyAction}
+                    setCurrencyRate={setCurrencyRateAction}
+                    setCurrencySymbol={setCurrencySymbolAction}
                 />
                 <Stops
                     currency={currency}
                     filters={filters}
-                    setFilterActive={setFilterActive}
+                    setFilterActive={setFilterActiveAction}
                 />
             </div>
         );
     }
 }
 
-Sidebar.propTypes = {
-    currency: PropTypes.object.isRequired,
-    filters: PropTypes.object.isRequired,
-    setCurrency: PropTypes.func.isRequired,
-    setCurrencyRate: PropTypes.func.isRequired,
-    setCurrencySymbol: PropTypes.func.isRequired,
-    setFilterActive: PropTypes.func.isRequired
+const mapStateToProps = store => {
+    return {
+        currency: store.currency,
+        filters: store.filters
+    }
 };
 
-export default Sidebar;
+const mapDispatchToProps = dispatch => ({
+    setCurrencyAction: currency => dispatch(setCurrency(currency)),
+    setCurrencyRateAction: rate => dispatch(setCurrencyRate(rate)),
+    setCurrencySymbolAction: symbol => dispatch(setCurrencySymbol(symbol)),
+    setFilterActiveAction: filter => dispatch(setFilterActive(filter))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Sidebar)

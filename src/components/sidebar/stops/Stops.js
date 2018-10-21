@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import OnlyHtml from './OnlyHtml';
 import { helper } from '../../../helper';
 import './stops.css';

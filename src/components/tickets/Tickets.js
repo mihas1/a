@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 import './tickets.css';
 import Ticket from './ticket/Ticket';
 import 'whatwg-fetch';
+import {setFilterAvailable, setTickets} from '../../actions/actions';
 
 class Tickets extends Component {
     componentDidMount() {
@@ -13,7 +14,7 @@ class Tickets extends Component {
         window.fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
             .then((response) => response.json())
             .then((responseJson) => {
-                const {setTickets, setFilterAvailable} = this.props;
+                const {setTicketsAction, setFilterAvailableAction} = this.props;
                 let tickets = responseJson.tickets.slice(),
                     _h = {};
 
@@ -38,8 +39,8 @@ class Tickets extends Component {
                     return a.price - b.price;
                 });
 
-                setFilterAvailable(_h);
-                setTickets(tickets);
+                setFilterAvailableAction(_h);
+                setTicketsAction(tickets);
             })
             .catch((error) => {
                 console.error(error);
@@ -47,13 +48,17 @@ class Tickets extends Component {
     }
 
     render() {
-        const { tickets, filters, symbol, rate } = this.props;
+        const {page, filters, currency} = this.props;
+        const {tickets} = page;
+        const {active} = filters;
+        const {symbol, rate} = currency;
+
         let prep = tickets.slice();
 
         // filter
-        if (!('all' in filters)) {
+        if (!('all' in active)) {
             prep = prep.filter((item) => {
-                return item.stops in filters
+                return item.stops in active
             });
         }
 
@@ -74,13 +79,20 @@ class Tickets extends Component {
     }
 }
 
-Tickets.propTypes = {
-    tickets: PropTypes.array,
-    filters: PropTypes.object.isRequired,
-    symbol: PropTypes.string.isRequired,
-    rate: PropTypes.number.isRequired,
-    setTickets: PropTypes.func.isRequired,
-    setFilterAvailable: PropTypes.func.isRequired,
+const mapStateToProps = store => {
+    return {
+        currency: store.currency,
+        filters: store.filters,
+        page: store.page,
+    }
 };
 
-export default Tickets;
+const mapDispatchToProps = dispatch => ({
+    setTicketsAction: tickets => dispatch(setTickets(tickets)),
+    setFilterAvailableAction: filters => dispatch(setFilterAvailable(filters))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Tickets)

@@ -13,15 +13,33 @@ class Tickets extends Component {
         window.fetch('https://raw.githubusercontent.com/KosyanMedia/test-tasks/master/aviasales/tickets.json')
             .then((response) => response.json())
             .then((responseJson) => {
-                let tickets = responseJson.tickets;
+                const {setTickets, setFilterAvailable} = this.props;
+                let tickets = responseJson.tickets.slice(),
+                    _h = {};
 
-                // todo добавить поиск минимальных цен
+                // костыль с расчетом доступных фильтров и минимальных цен, нужно переделать алгоритм
                 tickets = tickets.sort((a,b) => {
+                    if (a.stops in _h) {
+                        if (a.price < _h[a.stops]) {
+                            _h[a.stops] = a.price;
+                        }
+                    } else {
+                        _h[a.stops] = a.price;
+                    }
+
+                    if (b.stops in _h) {
+                        if (b.price < _h[b.stops]) {
+                            _h[b.stops] = b.price;
+                        }
+                    } else {
+                        _h[b.stops] = b.price;
+                    }
+
                     return a.price - b.price;
                 });
 
-                this.props.setTickets(tickets);
-
+                setFilterAvailable(_h);
+                setTickets(tickets);
             })
             .catch((error) => {
                 console.error(error);
@@ -29,19 +47,21 @@ class Tickets extends Component {
     }
 
     render() {
-        const { tickets, filters, currRate, currSymb } = this.props;
+        const { tickets, filters, symbol, rate } = this.props;
         let prep = tickets.slice();
 
         // filter
-        prep = prep.filter((item) => {
-            return filters[item.stops]
-        });
+        if (!('all' in filters)) {
+            prep = prep.filter((item) => {
+                return item.stops in filters
+            });
+        }
 
         const ticketsHtml = prep.map((item) => {
             return <Ticket
                 data={item}
-                currSymb={currSymb}
-                currRate={currRate}
+                symbol={symbol}
+                rate={rate}
                 key={item.arrival_date + '_' + item.arrival_time}
             />
         });
@@ -57,9 +77,10 @@ class Tickets extends Component {
 Tickets.propTypes = {
     tickets: PropTypes.array,
     filters: PropTypes.object.isRequired,
-    currSymb: PropTypes.string.isRequired,
-    currRate: PropTypes.number.isRequired,
+    symbol: PropTypes.string.isRequired,
+    rate: PropTypes.number.isRequired,
     setTickets: PropTypes.func.isRequired,
+    setFilterAvailable: PropTypes.func.isRequired,
 };
 
 export default Tickets;

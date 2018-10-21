@@ -10,8 +10,17 @@ class Sidebar extends Component {
 
         return (
             <div className='sidebar'>
-                <Currency currency={currency} setCurrency={setCurrency} setCurrencyRate={setCurrencyRate} setCurrencySymbol={setCurrencySymbol}/>
-                <Stops filters={filters} setFilterActive={setFilterActive}/>
+                <Currency
+                    currency={currency}
+                    setCurrency={setCurrency}
+                    setCurrencyRate={setCurrencyRate}
+                    setCurrencySymbol={setCurrencySymbol}
+                />
+                <Stops
+                    currency={currency}
+                    filters={filters}
+                    setFilterActive={setFilterActive}
+                />
             </div>
         );
     }
@@ -24,7 +33,6 @@ Sidebar.propTypes = {
     setCurrencyRate: PropTypes.func.isRequired,
     setCurrencySymbol: PropTypes.func.isRequired,
     setFilterActive: PropTypes.func.isRequired
-
 };
 
 export default Sidebar;

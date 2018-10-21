@@ -3,9 +3,8 @@ export const scheme = {
         tickets: [],
     },
     filters: {
-        available: ['all', 0, 1, 2, 3], //todo надо сделать поиск доступных фильтров
-        active: {},
-        min_prices: {}
+        available: {},
+        active: {}
     },
     currency: {
         available: ['RUB', 'USD', 'EUR'],

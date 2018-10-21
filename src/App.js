@@ -6,16 +6,21 @@ import './App.css';
 import Sidebar from './components/sidebar/Sidebar';
 import Tickets from './components/tickets/Tickets';
 import './media.css';
-import {setTickets, setCurrency, setCurrencyRate, setCurrencySymbol, setFilterActive} from './actions/actions';
+import {setTickets, setCurrency, setCurrencyRate, setCurrencySymbol, setFilterAvailable, setFilterActive} from './actions/actions';
 import {polyfill} from 'es6-promise'; polyfill(); //ie11 fix
 
 class App extends Component {
     render() {
-        const {currency, filters, page, setTicketsAction, setCurrencyAction, setCurrencyRateAction, setCurrencySymbolAction, setFilterActiveAction} = this.props;
+        const {currency, filters, page, setTicketsAction, setCurrencyAction, setCurrencyRateAction, setCurrencySymbolAction, setFilterAvailableAction, setFilterActiveAction} = this.props;
 
         return (
             <div className='main'>
-                <img className='logo' src='/logo.svg' alt='logo' width={60}/>
+                <img
+                    className='logo'
+                    src='/logo.svg'
+                    alt='logo'
+                    width={60}
+                />
                 <Sidebar
                     filters={filters}
                     currency={currency}
@@ -26,10 +31,11 @@ class App extends Component {
                 />
                 <Tickets
                     tickets={page.tickets}
-                    setTickets={setTicketsAction}
-                    currSymb={currency.symbol}
-                    currRate={currency.rate}
                     filters={filters.active}
+                    symbol={currency.symbol}
+                    rate={currency.rate}
+                    setTickets={setTicketsAction}
+                    setFilterAvailable={setFilterAvailableAction}
                 />
             </div>
         );
@@ -50,6 +56,7 @@ const mapDispatchToProps = dispatch => ({
     setCurrencyAction: currency => dispatch(setCurrency(currency)),
     setCurrencyRateAction: rate => dispatch(setCurrencyRate(rate)),
     setCurrencySymbolAction: symbol => dispatch(setCurrencySymbol(symbol)),
+    setFilterAvailableAction: filters => dispatch(setFilterAvailable(filters)),
     setFilterActiveAction: filter => dispatch(setFilterActive(filter)),
 });
 

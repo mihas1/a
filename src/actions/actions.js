@@ -2,6 +2,7 @@ export const SET_CURRENCY = 'SET_CURRENCY';
 export const SET_CURRENCY_RATE = 'SET_CURRENCY_RATE';
 export const SET_CURRENCY_SYMBOL = 'SET_CURRENCY_SYMBOL';
 export const SET_TICKETS = 'SET_TICKETS';
+export const SET_FILTER_AVAILABLE = 'SET_FILTER_AVAILABLE';
 export const SET_FILTER_ACTIVE = 'SET_FILTER_ACTIVE';
 
 export function setCurrency(currency) {
@@ -29,6 +30,13 @@ export function setTickets(tickets) {
     return {
         type: SET_TICKETS,
         payload: tickets,
+    }
+}
+
+export function setFilterAvailable(filters) {
+    return {
+        type: SET_FILTER_AVAILABLE,
+        payload: filters,
     }
 }
 

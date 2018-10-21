@@ -17,73 +17,56 @@ class Stops extends Component {
     }
 
     onChange(filter) {
-        const {filters,setFilterActive} = this.props;
-        const {available,active} = filters;
+        const {filters, setFilterActive} = this.props;
+        const {active} = filters;
 
         let _active = Object.assign({}, active);
 
         if (filter !== undefined) {
-            if (filter === 'all') {
-                let all = _active.all;
-
-                for (let i = 0; i < available.length; i++) {
-                    _active[available[i]] = !all;
-                }
+            if (filter in _active) {
+                delete _active[filter];
+                delete _active['all'];
             } else {
-                _active['all'] = false;
+                _active[filter] = null;
 
-                if (filter in _active) {
-                    _active[filter] = !_active[filter];
-                } else {
-                    _active[filter] = true;
+                if (filter !== 'all') {
+                    delete _active['all'];
                 }
             }
         } else {
-            for (let i = 0; i < available.length; i++) {
-                _active[available[i]] = true;
-            }
+            _active.all = null;
         }
 
         setFilterActive(_active);
     }
 
     only(filter) {
-        const {filters,setFilterActive} = this.props;
-        const {available,active} = filters;
-
-        let _active = Object.assign({}, active);
-
-        if (filter === 'all') {
-            for (let i = 0; i < available.length; i++) {
-                _active[available[i]] = true;
-            }
-        } else {
-            for (let i in _active) {
-                _active[i] = false;
-            }
-            _active[filter] = true;
-        }
-
-        setFilterActive(_active);
+        this.props.setFilterActive({
+            [filter]: null
+        });
     }
 
     render() {
-        const {filters} = this.props;
-        const {available,active} = filters;
+        const {currency, filters} = this.props;
+        const {symbol, rate} = currency;
+        const {available, active} = filters;
 
-        const stops = available.map((filter, i) => {
+        const stops = Object.keys(available).map((filter, i) => {
             return (
                 <div className='stops-item' key={i + '_' + filter}>
                     <input
                         id={filter}
                         type='checkbox'
-                        checked={!!active[filter]}
+                        checked={filter in active}
                         onChange={() => this.onChange(filter)}
                     />
                     <label className='stops-label' htmlFor={filter}>
                         {helper.formatStops(filter)}
                     </label>
                     {filter !== 'all' && <OnlyHtml only={this.only} filter={filter}/>}
+                    <div className='stops-from'>
+                        от {helper.formatPrice((available[filter] * rate).toFixed())}{symbol}
+                    </div>
                 </div>
             )
         });
@@ -92,6 +75,17 @@ class Stops extends Component {
             <div className='stops'>
                 <div className='sidebar-title stops-title'>Количество пересадок</div>
                 <div className='stops-container'>
+                    <div className='stops-item'>
+                        <input
+                            id='all'
+                            type='checkbox'
+                            checked={'all' in active}
+                            onChange={() => this.onChange('all')}
+                        />
+                        <label className='stops-label' htmlFor='all'>
+                            {helper.formatStops('all')}
+                        </label>
+                    </div>
                     {stops}
                 </div>
             </div>
@@ -101,9 +95,9 @@ class Stops extends Component {
 
 
 Stops.propTypes = {
+    currency: PropTypes.object.isRequired,
     filters: PropTypes.object.isRequired,
     setFilterActive: PropTypes.func.isRequired
-
 };
 
 export default Stops;

@@ -5,7 +5,7 @@ import './ticket.css';
 
 class Ticket extends Component {
     render() {
-        const { data, currRate, currSymb} = this.props;
+        const { data, symbol, rate} = this.props;
         const {
             carrier = 'carrier',
             price = 0,
@@ -23,8 +23,15 @@ class Ticket extends Component {
         return (
             <div className='ticket'>
                 <div className='ticket-main'>
-                    <img src={helper.img(carrier, 'img')} alt={helper.img(carrier, 'alt')} width={120} height={35}/>
-                    <a href={'/'}><span>Купить</span>за {helper.formatPrice((price * currRate).toFixed())}{currSymb}</a>
+                    <img
+                        src={helper.img(carrier, 'img')}
+                        alt={helper.img(carrier, 'alt')}
+                        width={120}
+                        height={35}
+                    />
+                    <a href={'/'}>
+                        <span>Купить</span>за {helper.formatPrice((price * rate).toFixed())}{symbol}
+                    </a>
                 </div>
                 <div className='ticket-details'>
                     <div className='ticket-time df jcsb'>
@@ -48,8 +55,8 @@ class Ticket extends Component {
 
 Ticket.propTypes = {
     data: PropTypes.object.isRequired,
-    currSymb: PropTypes.string.isRequired,
-    currRate: PropTypes.number.isRequired,
+    symbol: PropTypes.string.isRequired,
+    rate: PropTypes.number.isRequired,
 };
 
 export default Ticket;

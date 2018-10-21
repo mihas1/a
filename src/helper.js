@@ -28,21 +28,24 @@ export const helper = {
         return '';
     },
     formatStops(stops) {
-        let text = '';
+        let text = '',
+            val = stops;
 
-        if (stops === 1) {
+        if (!isNaN(parseFloat(val))) val = parseFloat(val);
+
+        if (val === 1) {
             text = ' пересадка';
-        } else if (stops > 1 && stops < 5) {
+        } else if (val > 1 && val < 5) {
             text = ' пересадки';
-        } else if (stops >= 5) {
+        } else if (val >= 5) {
             text = ' пересадок';
-        } else if (stops === 0) {
+        } else if (val === 0) {
             return 'Без пересадок'
-        } else if (stops === 'all') {
+        } else if (val === 'all') {
             return 'Все';
         }
 
-        return stops + text;
+        return val + text;
     },
     monthByNum(value) {
         return ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][value]
